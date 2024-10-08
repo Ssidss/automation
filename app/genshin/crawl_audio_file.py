@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 import time
 import requests, json
@@ -20,6 +22,8 @@ def getCharacterAudio(targetUrl: str, driver: webdriver.Remote, outputDir: str):
             os.remove(f"{outputDir}/{file}")
 
     driver.get(targetUrl)
+    WebDriverWait(driver, 10).until(
+    lambda driver: driver.execute_script("return document.readyState") == "complete")   
     time.sleep(2)
     contents = getAudioText(driver)
     return contents
